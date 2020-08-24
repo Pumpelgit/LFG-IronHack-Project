@@ -4,7 +4,9 @@
   "description": "Looking For Gamer. Find other people to play with.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "dev": "nodemon -e hbs,js,css app.js",
+    "seeds": "node ./bin/seeds"
   },
   "repository": {
     "type": "git",
