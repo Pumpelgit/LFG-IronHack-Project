@@ -62,6 +62,37 @@ const userSchema = new mongoose.Schema({
   social: {
     google: String,
   },
+  userRating: {
+    gg: {
+      type:Number,
+    },
+    helpful:{
+      type: Number,
+    }
+  },
+  birthdate: Date,
+  gender: {
+    type: String,
+    enum: ["Female","Male","Other"]
+  },
+  region: {
+    type: String,
+    enum: ["North America", "South America","Europe","Asia","Australia","Africa"]
+  },
+  language: {
+    type: [String],
+    enum: ["DE","EN","ES","FR","HR","IT","JA","NL","PL","PT","RU","ZH"]
+  },
+  playerTags: {
+    discord: String,
+    steam: String,
+    battlenet: String,
+    epic: String,
+    uplay: String,
+    origin: String,
+    riot: String,
+    other: String
+  }
 })
 
 userSchema.pre("save", function (next) {
@@ -79,6 +110,6 @@ userSchema.methods.checkPassword = function (password) {
   return bcrypt.compare(password, this.password)
 }
 
-const User = moongoose.model("User", userSchema)
+const User = mongoose.model("User", userSchema)
 
 module.exports = User

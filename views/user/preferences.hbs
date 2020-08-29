@@ -1,0 +1,29 @@
+<form action="/edit" method="POST">
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input name="username" type="text" class="form-control" id="username" placeholder="Username"
+            value="{{user.username}}">
+    </div>
+
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input name="name" type="text" class="form-control" id="name" placeholder="Username" value="{{user.name}}">
+    </div>
+
+    <div class="d-flex mb-3">
+        <button type="submit" class="btn btn-primary mr-3">Update</button>
+    </div>
+
+    <div class="form-group">
+        <label for="avatar">Avatar</label>
+        <input name="avatar" type="file" class="form-control {{#if error.avatar }}is-invalid{{/if}}" id="avatar"
+            placeholder="Enter avatar" value="{{ user.avatar }}" multiple>
+
+        {{#if error.avatar}}
+        <div class="invalid-feedback">
+            {{error.avatar.message}}
+        </div>
+        {{/if}}
+    </div>
+
+</form>

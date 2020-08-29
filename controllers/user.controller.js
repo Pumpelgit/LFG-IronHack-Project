@@ -1,10 +1,24 @@
 const mongoose = require("mongoose")
-const User = require("..models/user.model")
+const User = require("../models/user.model")
 const nodemailer = require("../config/mailer.config")
 const passport = require("passport")
 
-module.exports = (req, res, next) => {
-  res.render("user/login")
+module.exports.doSocialLoginGoogle = (req, res, next) => {
+  console.log("doing social loging")
+  const passportController = passport.authenticate(
+    "google",
+    { scope: ["profile", "email"] },
+    (error, user) => {
+      if (error) {
+        next(error)
+      } else {
+        req.session.userId = user._id
+        res.redirect("/")
+      }
+    }
+  )
+
+  passportController(req, res, next)
 }
 
 module.exports.doSocialLoginGoogle = (req, res, next) => {
@@ -24,8 +38,8 @@ module.exports.doSocialLoginGoogle = (req, res, next) => {
   passportController(req, res, next)
 }
 
-module.exports.login = (req,res,next) => {
-    res.render("user/login")
+module.exports.login = (req, res, next) => {
+  res.render("user/login")
 }
 
 module.exports.doLogin = (req, res, next) => {
@@ -112,33 +126,43 @@ module.exports.createUser = (req, res, next) => {
     .catch(next)
 }
 
-module.exports.activateUser = (req,res,next) => {
-    User.findOne({'activation.token': req.params.token})
-    .then(user => {
-        if (user) {
-            user.activation.active = true
-            user.save()
-            .then(user =>{
-                res.render('user/login',{
-                    message: 'Your account has been activated, log in below!'
-                })
+module.exports.activateUser = (req, res, next) => {
+  User.findOne({ "activation.token": req.params.token })
+    .then((user) => {
+      if (user) {
+        user.activation.active = true
+        user
+          .save()
+          .then((user) => {
+            res.render("user/login", {
+              message: "Your account has been activated, log in below!",
             })
-            .catch(e => next)
-        }else {
-            res.render('user/login', {
-                error: {
-                    validation: {
-                        message: 'Invalid link'
-                    }
-                }
-            })
-        }
+          })
+          .catch((e) => next)
+      } else {
+        res.render("user/login", {
+          error: {
+            validation: {
+              message: "Invalid link",
+            },
+          },
+        })
+      }
     })
-    .catch(e=> next)
+    .catch((e) => next)
 }
 
-module.exports.logout = (req,res,next) => {
-    req.session.destroy()
-    res.redirect('/')
+module.exports.preferences = (req, res, next) => {
+  const params = { user: req.currentUser._id }
+  console.log(params)
+  User.findOne(params)
+    .then((user) => {
+      res.render("user/preferences", user)
+    })
+    .catch(next)
 }
 
+module.exports.logout = (req, res, next) => {
+  req.session.destroy()
+  res.redirect("/")
+}
