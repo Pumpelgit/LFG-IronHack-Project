@@ -3,13 +3,10 @@ const router = express.Router()
 const multer = require("multer")
 const sessionMiddleware = require("../middlewares/session.middleware")
 const uploads = multer({ dest: "./public/uploads" })
+const userController = require("../controllers/users.controller")
 
-router.get("/login", (req, res, next) => {
-  res.render("user/login")
-})
-router.get("/signup", (req, res, next) => {
-  res.render("user/signup")
-})
+router.get("/login",userController.login)
+router.get("/signup", userController.signup)
 
 router.get("/", (req, res, next) => {
   res.render("appflow/landing")

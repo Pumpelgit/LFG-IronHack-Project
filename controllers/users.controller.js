@@ -24,7 +24,11 @@ module.exports.doSocialLoginGoogle = (req, res, next) => {
   passportController(req, res, next)
 }
 
-module.exportsl.doLogin = (req, res, next) => {
+module.exports.login = (req,res,next) => {
+    res.render("user/login")
+}
+
+module.exports.doLogin = (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (user) {
