@@ -1,0 +1,144 @@
+<div class="mb-2">
+    <h6>Username</h6>
+    <span id="username">{{user.username}}</span>
+    <button class="btn btn-outline-primary fa fa-pencil m-0 py-0 px-1" data-toggle="modal"
+        data-target="#editNameModal"></button>
+    <div class="modal fade" id="editNameModal" tabindex="-1" aria-labelledby="editNameModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editNameModal">Change Username</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input name="username" type="text" class="form-control" id="usernamefixed"
+                            placeholder="Username" value="">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        onclick="updateProfileUsername()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mb-2">
+    <h6>avatar</h6>
+    <span>
+        {{#if user.avatar}}
+        <img id="avatar" src="{{user.avatar}}" alt="avatar" width="50">
+        {{else}}
+        Choose an avatar
+        {{/if}}
+    </span>
+    <button class="btn btn-outline-primary fa fa-pencil m-0 py-0 px-1" data-toggle="modal"
+        data-target="#editAvatarModal"></button>
+    <div class="modal fade" id="editAvatarModal" tabindex="-1" aria-labelledby="editAvatarModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAvatarModal">Change avatar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/update" method="POST">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="avatar">avatar</label>
+                            <input name="avatar" type="file" class="form-control" id="avatarFixed" placeholder="avatar"
+                                value="">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                            onclick="updateProfileAvatar()">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mb-2">
+    <h6>Birth Date</h6>
+    <span type="date" id="birthdate">{{date user.birthdate}}{{#unless user.birthdate}}Not defined{{/unless}}</span>
+    <button class="btn btn-outline-primary fa fa-pencil m-0 py-0 px-1" data-toggle="modal"
+        data-target="#editBirthDateModal"></button>
+    <div class="modal fade" id="editBirthDateModal" tabindex="-1" aria-labelledby="editBirthDateModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editBirthDateModal">Change Birth Date</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="birthdate">Birth Date</label>
+                        <input name="birthdate" type="date" class="form-control" id="birthdatefixed"
+                            placeholder="Birth Date" value="1950-02-01" placeholder="01-02-1950"
+                            onfocus="(this.type='date')">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        onclick="updateProfileBirthDate()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mb-2">
+    <h6>Gender</h6>
+    <span id="gender">{{user.gender}}</span>
+    <button class="btn btn-outline-primary fa fa-pencil m-0 py-0 px-1" data-toggle="modal"
+        data-target="#editGenderModal"></button>
+    <div class="modal fade" id="editGenderModal" tabindex="-1" aria-labelledby="editGenderModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editGenderModal">Change Gender</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="genderfixed">Gender</label>
+                        <select class="custom-select" id="genderfixed" required>
+                            <option selected disabled value="">Choose...</option>
+                            {{#each genderEnums as |enum|}}
+                            <option>{{enum}}</option>
+                            {{/each}}
+                        </select>
+                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        onclick="updateProfileGender()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#unless user.activation.profileFinished}}
+<p class="mb-0">Please complete all the required fields</p>
+{{/unless}}
+<a href="/lfg" id="lfg" class="btn btn-primary {{#unless user.activation.profileFinished}}disabled{{/unless}}">Look For
+    Gamers</a>

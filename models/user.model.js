@@ -4,7 +4,8 @@ const mongoose = require("mongoose")
 const EMAIL_PATTERN = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
 
 const generateRandomToken = () => {
-  const characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  const characters =
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
   let token = ""
   for (let i = 0; i < 25; i++) {
     token += characters[Math.floor(Math.random() * characters.length)]
@@ -38,8 +39,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     minlength: [8, "Password must be at least 8 characters long"],
   },
-  pictures: {
-    type: [String],
+  avatar: {
+    type: String,
   },
   description: {
     type: String,
@@ -55,7 +56,7 @@ const userSchema = new mongoose.Schema({
       default: generateRandomToken,
     },
     profileFinished: {
-      type: String,
+      type: Boolean,
       default: false,
     },
   },
@@ -64,24 +65,44 @@ const userSchema = new mongoose.Schema({
   },
   userRating: {
     gg: {
-      type:Number,
-    },
-    helpful:{
       type: Number,
-    }
+    },
+    helpful: {
+      type: Number,
+    },
   },
   birthdate: Date,
   gender: {
     type: String,
-    enum: ["Female","Male","Other"]
+    enum: ["Female", "Male", "Other"],
   },
   region: {
     type: String,
-    enum: ["North America", "South America","Europe","Asia","Australia","Africa"]
+    enum: [
+      "North America",
+      "South America",
+      "Europe",
+      "Asia",
+      "Australia",
+      "Africa",
+    ],
   },
   language: {
     type: [String],
-    enum: ["DE","EN","ES","FR","HR","IT","JA","NL","PL","PT","RU","ZH"]
+    enum: [
+      "DE",
+      "EN",
+      "ES",
+      "FR",
+      "HR",
+      "IT",
+      "JA",
+      "NL",
+      "PL",
+      "PT",
+      "RU",
+      "ZH",
+    ],
   },
   playerTags: {
     discord: String,
@@ -91,8 +112,8 @@ const userSchema = new mongoose.Schema({
     uplay: String,
     origin: String,
     riot: String,
-    other: String
-  }
+    other: String,
+  },
 })
 
 userSchema.pre("save", function (next) {
@@ -108,6 +129,14 @@ userSchema.pre("save", function (next) {
 
 userSchema.methods.checkPassword = function (password) {
   return bcrypt.compare(password, this.password)
+}
+
+userSchema.methods.requiredSettingsFinished = function () {
+  //if(this.birthdate && this.language && this.region && his.gender && this.description) {
+    console.log("entering required settings");
+  if(true) {
+    this.activation.profileFinished = 'true'
+  }
 }
 
 const User = mongoose.model("User", userSchema)
