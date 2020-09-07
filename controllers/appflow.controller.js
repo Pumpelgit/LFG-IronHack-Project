@@ -6,7 +6,7 @@ const passport = require("passport")
 module.exports.filter = (req, res, next) => {
   User.findById(req.currentUser._id)
     .then((user) => {
-      if(user.activation.finishedProfile){
+      if(user.activation.profileFinished){
         console.log("profile finished");
         res.render("appflow/filter")
       } else {

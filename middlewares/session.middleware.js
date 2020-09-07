@@ -19,7 +19,7 @@ module.exports.isNotAuthenticated = (req, res, next) => {
   User.findById(req.session.userId)
     .then((user) => {
       if (user) {
-        res.redirect("/landing");//end point where we send user if he is authenticated
+        res.redirect("/lfg");//end point where we send user if he is authenticated
       } else {
         next();//we pass on the petition in the pipe, eventually reaching "landing page"
       }

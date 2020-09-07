@@ -15,6 +15,7 @@ router.post("/login", sessionMiddleware.isNotAuthenticated,userController.doLogi
 router.get("/profile",sessionMiddleware.isAuthenticated,userController.profile)
 router.post("/update/:field/", sessionMiddleware.isAuthenticated,uploads.single('avatar'),userController.updateProfile)
 router.get("/lfg",sessionMiddleware.isAuthenticated,appflowController.filter)
+router.get("/logout",sessionMiddleware.isAuthenticated,userController.logout)
 router.get("/", (req, res, next) => {  
   res.redirect("/lfg")
 })

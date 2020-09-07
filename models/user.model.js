@@ -71,7 +71,9 @@ const userSchema = new mongoose.Schema({
       type: Number,
     },
   },
-  birthdate: Date,
+  birthdate: {
+    type: Date,
+  },
   gender: {
     type: String,
     enum: ["Female", "Male", "Other"],
@@ -104,7 +106,7 @@ const userSchema = new mongoose.Schema({
       "ZH",
     ],
   },
-  playerTags: {
+  gameTags: {
     discord: String,
     steam: String,
     battlenet: String,
@@ -132,11 +134,32 @@ userSchema.methods.checkPassword = function (password) {
 }
 
 userSchema.methods.requiredSettingsFinished = function () {
-  //if(this.birthdate && this.language && this.region && his.gender && this.description) {
-    console.log("entering required settings");
-  if(true) {
-    this.activation.profileFinished = 'true'
+  if (
+    this.birthdate &&
+    this.language &&
+    this.region &&
+    this.gender &&
+    this.description &&
+    !this.checkIfGameTagsAreEmpty()
+  ) {
+    console.log("entering required settings")
+    this.activation.profileFinished = "true"
+    this.save()
   }
+}
+userSchema.methods.checkIfGameTagsAreEmpty = function() {
+  if(this.gameTags.discord === undefined&&
+    this.gameTags.steam === undefined&&
+    this.gameTags.origin === undefined&&
+    this.gameTags.epic === undefined&&
+    this.gameTags.other === undefined&&
+    this.gameTags.riot === undefined&&
+    this.gameTags.uplay === undefined&&
+    this.gameTags.battlenet === undefined) {
+      return true
+    } else {
+      return false
+    }
 }
 
 const User = mongoose.model("User", userSchema)

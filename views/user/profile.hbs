@@ -1,5 +1,6 @@
+{{!-- Username --}}
 <div class="mb-2">
-    <h6>Username</h6>
+    <h4>Username</h4>
     <span id="username">{{user.username}}</span>
     <button class="btn btn-outline-primary fa fa-pencil m-0 py-0 px-1" data-toggle="modal"
         data-target="#editNameModal"></button>
@@ -28,9 +29,42 @@
         </div>
     </div>
 </div>
-
+{{!-- Description --}}
 <div class="mb-2">
-    <h6>avatar</h6>
+    <h4>Description</h4>
+    <textarea disabled type="text" id="description" rows="4" cols="50"
+        style="resize: none">{{user.description}}</textarea>
+    <button class="btn btn-outline-primary fa fa-pencil m-0 py-0 px-1" data-toggle="modal"
+        data-target="#editDescriptionModal"></button>
+    <div class="modal fade" id="editDescriptionModal" tabindex="-1" aria-labelledby="editDescriptionModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editDescriptionModal">Change Description</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea name="description" type="text" class="form-control" id="descriptionfixed"
+                            placeholder="I love videogames!" rows="4">{{user.description}}</textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        onclick="updateProfileDescription()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{!-- Avatar --}}
+<div class="mb-2">
+    <h4>avatar</h4>
     <span>
         {{#if user.avatar}}
         <img id="avatar" src="{{user.avatar}}" alt="avatar" width="50">
@@ -67,10 +101,10 @@
         </div>
     </div>
 </div>
-
+{{!-- Birth Date --}}
 <div class="mb-2">
-    <h6>Birth Date</h6>
-    <span type="date" id="birthdate">{{date user.birthdate}}{{#unless user.birthdate}}Not defined{{/unless}}</span>
+    <h4>Birth Date</h4>
+    <span type="date" id="birthdate">{{#if user.birthdate}}{{date user.birthdate}}{{else}}Not defined{{/if}}</span>
     <button class="btn btn-outline-primary fa fa-pencil m-0 py-0 px-1" data-toggle="modal"
         data-target="#editBirthDateModal"></button>
     <div class="modal fade" id="editBirthDateModal" tabindex="-1" aria-labelledby="editBirthDateModal"
@@ -87,7 +121,7 @@
                     <div class="form-group">
                         <label for="birthdate">Birth Date</label>
                         <input name="birthdate" type="date" class="form-control" id="birthdatefixed"
-                            placeholder="Birth Date" value="1950-02-01" placeholder="01-02-1950"
+                            placeholder="Birth Date" value="1990-02-01" placeholder="01-02-1990"
                             onfocus="(this.type='date')">
                     </div>
                 </div>
@@ -100,10 +134,10 @@
         </div>
     </div>
 </div>
-
+{{!-- Gender --}}
 <div class="mb-2">
-    <h6>Gender</h6>
-    <span id="gender">{{user.gender}}</span>
+    <h4>Gender</h4>
+    <span id="gender">{{#if user.gender}}{{user.gender}}{{else}}Not defined{{/if}}</span>
     <button class="btn btn-outline-primary fa fa-pencil m-0 py-0 px-1" data-toggle="modal"
         data-target="#editGenderModal"></button>
     <div class="modal fade" id="editGenderModal" tabindex="-1" aria-labelledby="editGenderModal" aria-hidden="true">
@@ -124,7 +158,7 @@
                             <option>{{enum}}</option>
                             {{/each}}
                         </select>
-                        
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -136,9 +170,122 @@
         </div>
     </div>
 </div>
+{{!-- Language --}}
+<div class="mb-2">
+    <h4>Language</h4>
+    <span id="language">{{#if user.language}}{{#each user.language as |lang|}}| {{lang}} {{/each}} |{{else}}Not defined{{/if}}</span>
+    <button class="btn btn-outline-primary fa fa-pencil m-0 py-0 px-1" data-toggle="modal"
+        data-target="#editLanguageModal"></button>
+    <div class="modal fade" id="editLanguageModal" tabindex="-1" aria-labelledby="editLanguageModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editLanguageModal">Languages</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="languagefixed">Languages</label>
+                        <select multiple class="custom-select" id="languagefixed" required>
+                            <option selected disabled value="">Choose...</option>
+                            {{#each langEnums as |lang|}}
+                            <option>{{lang}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        onclick="updateProfileLang()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{!-- Region --}}
+<div class="mb-2">
+    <h4>Region</h4>
+    <span id="region">{{#if user.region}}{{user.region}}{{else}}Not defined{{/if}}</span>
+    <button class="btn btn-outline-primary fa fa-pencil m-0 py-0 px-1" data-toggle="modal"
+        data-target="#editRegionModal"></button>
+    <div class="modal fade" id="editRegionModal" tabindex="-1" aria-labelledby="editRegionModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editRegionModal">Change Region</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="regionfixed">Region</label>
+                        <select class="custom-select" id="regionfixed" required>
+                            <option selected disabled value="">Choose...</option>
+                            {{#each regionEnums as |enum|}}
+                            <option>{{enum}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        onclick="updateProfileRegion()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{!-- Tags --}}
+<div class="mb-2">
+    <h4>Game Tags</h4>
+    <div class="row border py-2">
+        {{#each user.gameTags as |tag|}}
+        {{#unless @first}}
+        <div class="col-6">
+            <p class="font-weight-bold">{{@key}}
+                <span id="{{@key}}" class="font-weight-normal"> {{tag}}#</span>
+                <button class="btn btn-outline-primary fa fa-pencil m-0 py-0 px-1" data-toggle="modal"
+                data-target="#edit{{@key}}Modal"></button>
+            </p>            
+        </div>
 
+        {{!-- modal --}}
+        <div class="modal fade" id="edit{{@key}}Modal" tabindex="-1" aria-labelledby="edit{{@key}}Modal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="edit{{@key}}Modal">Change {{@key}} Tag</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="{{@key}}">{{@key}} Tag</label>
+                            <input name="{{@key}}" type="text" class="form-control" id="{{@key}}fixed"
+                                placeholder="{{@key}}" value="">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                            onclick="updateProfileGameTag({{@key}})">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/unless}}
+        {{/each}}
+    </div>
+</div>
 {{#unless user.activation.profileFinished}}
-<p class="mb-0">Please complete all the required fields</p>
+<p id="completeWarning"class="mb-0">Please complete all the required fields</p>
 {{/unless}}
 <a href="/lfg" id="lfg" class="btn btn-primary {{#unless user.activation.profileFinished}}disabled{{/unless}}">Look For
     Gamers</a>

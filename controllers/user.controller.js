@@ -4,7 +4,6 @@ const nodemailer = require("../config/mailer.config")
 const passport = require("passport")
 
 module.exports.doSocialLoginGoogle = (req, res, next) => {
-  console.log("doing social loging")
   const passportController = passport.authenticate(
     "google",
     { scope: ["profile", "email"] },
@@ -13,24 +12,8 @@ module.exports.doSocialLoginGoogle = (req, res, next) => {
         next(error)
       } else {
         req.session.userId = user._id
-        res.redirect("/")
-      }
-    }
-  )
-
-  passportController(req, res, next)
-}
-
-module.exports.doSocialLoginGoogle = (req, res, next) => {
-  const passportController = passport.authenticate(
-    "google",
-    { scope: ["profile", "email"] },
-    (error, user) => {
-      if (error) {
-        next(error)
-      } else {
-        req.session.userId = user._id
-        if(user.activation.profileFinished){
+        console.log("tafak");
+        if (user.activation.profileFinished) {
           res.redirect("/lfg")
         } else {
           res.redirect("/profile")
@@ -54,7 +37,7 @@ module.exports.doLogin = (req, res, next) => {
           if (match) {
             if (user.activation.active) {
               req.session.userId = user._id
-              if(user.activation.profileFinished){
+              if (user.activation.profileFinished) {
                 res.redirect("/lfg")
               } else {
                 res.redirect("/profile")
@@ -166,26 +149,32 @@ module.exports.activateUser = (req, res, next) => {
 module.exports.profile = (req, res, next) => {
   User.findById(req.currentUser._id)
     .then((user) => {
-      const genderEnums = User.schema.path('gender').enumValues
-      console.log(genderEnums);
-      res.render("user/profile", { user,genderEnums })
+      console.log(user);
+      const genderEnums = User.schema.path("gender").enumValues
+      const regionEnums = User.schema.path("region").enumValues
+      const langEnums = User.schema.path("language").caster.enumValues
+      res.render("user/profile", { user, genderEnums, langEnums, regionEnums })
     })
     .catch(next)
 }
 
 module.exports.updateProfile = (req, res, next) => {
-  
-  const documentChange = req.body
+  let documentChange = req.body
+  if (req.body.gameTags) {
+    const parsedTag = JSON.parse(req.body.gameTags);
+    documentChange = `{"gameTags.${Object.keys(parsedTag)[0]}": "${parsedTag[Object.keys(parsedTag)[0]]}"}`
+    documentChange = JSON.parse(documentChange)
+  }
   if (req.file) {
     documentChange.avatar = `/uploads/${req.file.filename}`
   }
 
-  console.log(documentChange);
-
-  User.findByIdAndUpdate(req.currentUser._id, documentChange, { new: "true" })
+  User.findOneAndUpdate({_id: req.currentUser._id}, documentChange, { new: "true" })
     .then((user) => {
+      console.log("updated user-----")
+      console.log(user)
       user.requiredSettingsFinished()
-      res.json({user})
+      res.json({ user })
       //res.re("user/profile", {user})
     })
     .catch(next)
