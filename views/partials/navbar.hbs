@@ -28,7 +28,7 @@
                                 <img src="{{matchedUser.avatar}}" alt="user avatar" width=50 class="rounded-circle">
                             </div>
                             <div class="modal-body inner-card-description border border-dark m-2 rounded">
-                                <div class="row ">
+                                <div id="modal-game-tags" class="row ">
                                     <h6 class="w-100">Game Tags</h6>
                                     {{#each matchedUser.gameTags as |tag|}}
                                     {{#unless @first}}

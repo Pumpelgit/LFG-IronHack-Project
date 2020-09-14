@@ -81,7 +81,8 @@ module.exports.doLogin = (req, res, next) => {
 }
 
 module.exports.signup = (req, res, next) => {
-  res.render("user/signup")
+  const renderMenuFalse = {}
+  res.render("user/signup",{ renderMenuFalse })
 }
 
 module.exports.createUser = (req, res, next) => {
@@ -225,46 +226,33 @@ module.exports.landing = (req, res, next) => {
 
 module.exports.likeUser = (req, res, next) => {
   const likedUserId = mongoose.Types.ObjectId(req.params.id)
-  console.log(likedUserId);
-  User.findById(req.currentUser.id)
+  console.log(likedUserId)
+  User.findByIdAndUpdate(req.currentUser.id, {
+    $addToSet: { likedUsers: likedUserId },
+  })
     .then((currentUser) => {
-      if (currentUser.likedUsers.includes(likedUserId)) {
-        console.log("already liked user")
-        res.json({ petition: "DUPLICATE" })
-      } else {
-        console.log("Not Liked Checking if Match")
-        User.findById(likedUserId).then((likedUser) => {
-          console.log(likedUser)
-          if (likedUser.likedUsers.includes(req.currentUser.id)) {
-            console.log("MATCH")
-            const promiseLikedUser = new Promise((resolve,rej) => {
-              likedUser.matchedUsers.push(currentUser._id)
-              console.log(likedUser);
-              likedUser.save()
-              .then(resolve)
-            })
-            const promiseCurrentUser = new Promise((resolve,rej) => {
-              currentUser.matchedUsers.push(likedUser._id)
-              console.log(currentUser);
-              currentUser.save()
-              .then(resolve)
-            })
-            Promise.all([promiseLikedUser,promiseCurrentUser])
-            .then(()=>{
-              console.log("Players MATCHED")
-              res.json({ likedUser, petition: "MATCH" })
-            })
-          } else {
-            console.log("No Match adding to likedUsers")
-            currentUser.likedUsers.push(likedUserId)
-            currentUser.save()
-            .then((user) => {
-              console.log("liked user added successfully")
-              res.json({ petition: "USER LIKED" })
-            })
-          }
-        })
-      }
+      User.findById(likedUserId)
+      .populate("games")
+      .then((likedUser) => {
+        console.log(likedUser)
+        if (likedUser.likedUsers.includes(req.currentUser.id)) {
+          Promise.all([
+            User.findByIdAndUpdate(currentUser._id, {
+              $addToSet: { matchedUsers: likedUser._id },
+            }),
+            User.findByIdAndUpdate(likedUser._id, {
+              $addToSet: { matchedUsers: currentUser._id },
+            }),
+          ]).then(() => {
+            console.log("Players MATCHED")
+            res.json({ likedUser, petition: "MATCH" })
+          })
+        } else {
+          console.log("No Match adding to likedUsers")
+          console.log("liked user added successfully")
+          res.json({ petition: "USER LIKED" })
+        }
+      })
     })
     .catch(next)
 }

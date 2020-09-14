@@ -18,10 +18,14 @@
       <div class="col-2">
         {{>navbar}}
       </div>
-      {{/unless}}
       <div class="col-10">
         {{{body}}}
       </div>
+      {{else}}
+       <div class="col-12">
+        {{{body}}}
+      </div>
+      {{/unless}}
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

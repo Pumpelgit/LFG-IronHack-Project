@@ -77,13 +77,19 @@ module.exports.lookup = (req, res, next) => {
         User.find(preferences)
           .populate("games")
           .limit(10)
-          .then((users) => {
+          .then((foundUsers) => {
+            const users = foundUsers.filter((e) => {
+              if (!e._id.equals(req.currentUser._id) && !req.currentUser.likedUsers.includes(e._id)) {
+                return e
+              }
+            })
+            console.log(users)
             console.log(`Found ${users.length} entries`)
             User.findById(req.currentUser.id)
               .populate("matchedUsers")
               .populate("games")
               .then((user) => {
-                console.log(user)
+                //console.log(user)
                 res.render("appflow/swipe", { users, user })
               })
               .catch(next)
