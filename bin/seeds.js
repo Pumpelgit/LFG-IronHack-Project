@@ -78,6 +78,7 @@ Promise.all([User.deleteMany(),Game.deleteMany()])
         games: addRandomGames(gameIDs),
       })
       user.save()
+      .catch()
     }
   })
   .then(() => {
