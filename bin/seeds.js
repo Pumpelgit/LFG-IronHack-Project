@@ -76,6 +76,12 @@ Promise.all([User.deleteMany(),Game.deleteMany()])
           other: "none",
         },
         games: addRandomGames(gameIDs),
+        likedUsers: function() {
+          const array = []
+          return array},
+        matchedUsers: function() {
+          const array = []
+          return array}
       })
       user.save()
       .catch()
