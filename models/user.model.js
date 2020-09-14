@@ -123,10 +123,12 @@ const userSchema = new mongoose.Schema({
   likedUsers: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    default: []
   }],
   matchedUsers: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    default: []
   }]
 })
 
