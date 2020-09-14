@@ -119,14 +119,17 @@ const userSchema = new mongoose.Schema({
   games:  {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "Game",
+    default: []
   },
   likedUsers: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "User",
+    default: []
   },
   matchedUsers: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "User",
+    default: []
   }
 })
 
