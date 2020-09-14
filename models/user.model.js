@@ -89,8 +89,8 @@ const userSchema = new mongoose.Schema({
       "Africa",
     ],
   },
-  language: [{
-    type: String,
+  language: {
+    type: [String],
     enum: [
       "DE",
       "EN",
@@ -105,7 +105,7 @@ const userSchema = new mongoose.Schema({
       "RU",
       "ZH",
     ],
-  }],
+  },
   gameTags: {
     discord: String,
     steam: String,
@@ -116,22 +116,18 @@ const userSchema = new mongoose.Schema({
     riot: String,
     other: String,
   },
-  games:  [{
-    type: mongoose.Schema.Types.ObjectId,
+  games:  {
+    type: [mongoose.Schema.Types.ObjectId],
     ref: "Game",
-  }],
-  likedUsers: [{
-    type: mongoose.Schema.Types.ObjectId,
+  },
+  likedUsers: {
+    type: [mongoose.Schema.Types.ObjectId],
     ref: "User",
-    unique: false,
-    sparse: true,
-  }],
-  matchedUsers: [{
-    type: mongoose.Schema.Types.ObjectId,
+  },
+  matchedUsers: {
+    type: [mongoose.Schema.Types.ObjectId],
     ref: "User",
-    unique: false,
-    sparse: true,
-  }]
+  }
 })
 
 userSchema.pre("save", function (next) {
