@@ -27,6 +27,7 @@ function updateProfileAvatar() {
       }
     )
     .then((res) => {
+      console.log(res.data);
       document.getElementById("avatar").src = res.data.user.avatar
       lfgButtonSetter(res)
     })

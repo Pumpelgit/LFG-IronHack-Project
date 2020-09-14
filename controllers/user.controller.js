@@ -204,7 +204,7 @@ module.exports.updateProfile = (req, res, next) => {
       documentChange = JSON.parse(documentChange)
     }
     if (req.file) {
-      documentChange.avatar = `/uploads/${req.file.filename}`
+      documentChange.avatar =  req.file ? req.file.path : undefined
     }
 
     User.findOneAndUpdate({ _id: req.currentUser._id }, documentChange, {
