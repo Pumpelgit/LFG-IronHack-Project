@@ -76,8 +76,8 @@ Promise.all([User.deleteMany(),Game.deleteMany()])
           other: "none",
         },
         games: addRandomGames(gameIDs),
-        likedUsers: [],
-        matchedUsers: []
+        likedUsers: null,
+        matchedUsers: null
       })
       user.save()
       .catch()
