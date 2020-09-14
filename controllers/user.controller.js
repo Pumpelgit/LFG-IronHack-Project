@@ -2,6 +2,7 @@ const mongoose = require("mongoose")
 const User = require("../models/user.model")
 const nodemailer = require("../config/mailer.config")
 const passport = require("passport")
+const Game = require("../models/games.model")
 
 module.exports.doSocialLoginGoogle = (req, res, next) => {
   const passportController = passport.authenticate(
@@ -12,7 +13,7 @@ module.exports.doSocialLoginGoogle = (req, res, next) => {
         next(error)
       } else {
         req.session.userId = user._id
-        console.log("tafak");
+        console.log("tafak")
         if (user.activation.profileFinished) {
           res.redirect("/lfg")
         } else {
@@ -26,7 +27,8 @@ module.exports.doSocialLoginGoogle = (req, res, next) => {
 }
 
 module.exports.login = (req, res, next) => {
-  res.render("user/login")
+  const renderMenuFalse = {}
+  res.render("user/login", { renderMenuFalse })
 }
 
 module.exports.doLogin = (req, res, next) => {
@@ -148,40 +150,123 @@ module.exports.activateUser = (req, res, next) => {
 
 module.exports.profile = (req, res, next) => {
   User.findById(req.currentUser._id)
+    .populate("games")
     .then((user) => {
-      console.log(user);
+      console.log(user)
       const genderEnums = User.schema.path("gender").enumValues
       const regionEnums = User.schema.path("region").enumValues
       const langEnums = User.schema.path("language").caster.enumValues
-      res.render("user/profile", { user, genderEnums, langEnums, regionEnums })
+      const renderMenuFalse = {}
+      Game.find({}).then((games) => {
+        res.render("user/profile", {
+          user,
+          genderEnums,
+          langEnums,
+          regionEnums,
+          games,
+          renderMenuFalse,
+        })
+      })
     })
     .catch(next)
 }
 
 module.exports.updateProfile = (req, res, next) => {
   let documentChange = req.body
-  if (req.body.gameTags) {
-    const parsedTag = JSON.parse(req.body.gameTags);
-    documentChange = `{"gameTags.${Object.keys(parsedTag)[0]}": "${parsedTag[Object.keys(parsedTag)[0]]}"}`
-    documentChange = JSON.parse(documentChange)
-  }
-  if (req.file) {
-    documentChange.avatar = `/uploads/${req.file.filename}`
-  }
+  // console.log("UPDATE PROFILE")
+  // console.log(documentChange)
 
-  User.findOneAndUpdate({_id: req.currentUser._id}, documentChange, { new: "true" })
-    .then((user) => {
-      console.log("updated user-----")
-      console.log(user)
-      user.requiredSettingsFinished()
-      res.json({ user })
-      //res.re("user/profile", {user})
+  if (documentChange.games) {
+    Game.find({ name: documentChange.games })
+      .then((gamesFound) => {
+        documentChange.games = gamesFound
+        console.log(gamesFound)
+        User.findOneAndUpdate({ _id: req.currentUser._id }, documentChange, {
+          new: "true",
+        })
+          .populate("games")
+          .then((user) => {
+            console.log(user)
+            user.requiredSettingsFinished()
+            res.json({ user })
+            //res.re("user/profile", {user})
+          })
+          .catch(next)
+      })
+      .catch(next)
+  } else {
+    if (documentChange.gameTags) {
+      const parsedTag = JSON.parse(documentChange.gameTags)
+      documentChange = `{"gameTags.${Object.keys(parsedTag)[0]}": "${
+        parsedTag[Object.keys(parsedTag)[0]]
+      }"}`
+      documentChange = JSON.parse(documentChange)
+    }
+    if (req.file) {
+      documentChange.avatar = `/uploads/${req.file.filename}`
+    }
+
+    User.findOneAndUpdate({ _id: req.currentUser._id }, documentChange, {
+      new: "true",
     })
-    .catch(next)
+      .then((user) => {
+        user.requiredSettingsFinished()
+        res.json({ user })
+        //res.re("user/profile", {user})
+      })
+      .catch(next)
+  }
 }
 
 module.exports.landing = (req, res, next) => {
-  res.render("appflow/landing")
+  const renderMenuFalse = {}
+  res.render("appflow/landing", { renderMenuFalse })
+}
+
+module.exports.likeUser = (req, res, next) => {
+  const likedUserId = mongoose.Types.ObjectId(req.params.id)
+  console.log(likedUserId);
+  User.findById(req.currentUser.id)
+    .then((currentUser) => {
+      if (currentUser.likedUsers.includes(likedUserId)) {
+        console.log("already liked user")
+        res.json({ petition: "DUPLICATE" })
+      } else {
+        console.log("Not Liked Checking if Match")
+        User.findById(likedUserId).then((likedUser) => {
+          console.log(likedUser)
+          if (likedUser.likedUsers.includes(req.currentUser.id)) {
+            console.log("MATCH")
+            const promiseLikedUser = new Promise((resolve,rej) => {
+              likedUser.matchedUsers.push(currentUser._id)
+              console.log(likedUser);
+              likedUser.save()
+              .then(resolve)
+            })
+            const promiseCurrentUser = new Promise((resolve,rej) => {
+              currentUser.matchedUsers.push(likedUser._id)
+              console.log(currentUser);
+              currentUser.save()
+              .then(resolve)
+            })
+            Promise.all([promiseLikedUser,promiseCurrentUser])
+            .then(()=>{
+              console.log("Players MATCHED")
+              res.json({ likedUser, petition: "MATCH" })
+            })
+          } else {
+            console.log("No Match adding to likedUsers")
+            currentUser.likedUsers.push(likedUserId)
+            currentUser.save()
+            .then((user) => {
+              console.log("liked user added successfully")
+              res.json({ petition: "USER LIKED" })
+            })
+          }
+        })
+      }
+    })
+    .catch(next)
 }
 
 module.exports.logout = (req, res, next) => {

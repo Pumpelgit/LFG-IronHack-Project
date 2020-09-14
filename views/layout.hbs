@@ -3,6 +3,7 @@
 
 <head>
   <title>LFG</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -11,14 +12,16 @@
 </head>
 
 <body>
-  <div class="container">
-    {{#if currentUser }}
-    <div class="col-2">
-      {{>navbar}}
-    </div>
-    {{/if}}
-    <div class="col-12">
-      {{{body}}}
+  <div class="container m-0 p-0">
+    <div class="row">
+      {{#unless renderMenuFalse }}
+      <div class="col-2">
+        {{>navbar}}
+      </div>
+      {{/unless}}
+      <div class="col-10">
+        {{{body}}}
+      </div>
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -32,6 +35,7 @@
     crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="/js/index.js"></script>
+  <script src="/js/swipe.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,29 @@
+<div class="row d-flex justify-content-center mt-3">
+    <div class="row flex-column mb-4">
+        <h3>{{#unless users}}No {{/unless}}Search Results!</h3>        
+        <a href="/lfg" class="btn btn-success btn-sm">Change Filter</a>
+    </div>
+</div>
+<div id="users-container" class="m-0 p-0">
+    {{#each users as |entry|}}
+    <div id="container-{{entry.id}}" class="user-container w-100 d-flex justify-content-center position-absolute {{#if @first}}showing{{/if}}">
+        <a href="#" class="col-1 align-self-stretch text-decoration-none " onclick="selectNo({{json entry.id}})">
+            <div class="d-flex h-100 align-items-center justify-content-center">
+                <i class="fa fa-thumbs-down fa-3x text-danger"></i>
+            </div>
+        </a>
+        <div class="user-card card w-100 col-4 border border-dark" id="card-{{entry.id}}">
+            <img src="{{entry.avatar}}" class="card-img-top my-2 rounded" alt="{{entry.avatar}}" draggable="false">
+            <div class="card-body inner-card-description my-2 rounded">
+                <p class="strong">{{entry.username}}</p>
+                <p class="card-text">{{entry.description}}</p>
+            </div>
+        </div>
+        <a href="#" class="col-1 align-self-stretch text-decoration-none" onclick="selectYes({{json entry._id}})">
+            <div class="d-flex h-100 align-items-center justify-content-center">
+                <i class="fa fa-thumbs-up fa-3x text-success"></i>
+            </div>
+        </a>
+    </div>
+    {{/each}}
+</div>

@@ -1,1 +1,71 @@
-<h1>Filter</h1>
+<div class="row d-flex justify-content-center mt-3">
+    <h1>Look For Gamer Filter</h1>
+    {{#if error}}
+    <div class="alert alert-danger" role="alert">
+        {{error}}
+    </div>
+    {{/if}}
+</div>
+<div class="row d-flex justify-content-center mt-3 col-8 mx-auto border border-dark rounded p-3 form-container">
+    <form action="/lookup" method="POST">
+        <div class="mb-2 row">
+            <label for="region">Region</label>
+            <select name="region" id="region" class="form-lfg ml-2">
+                <option selected disabled value="">Choose...</option>
+                {{#each regionEnums as |enum|}}
+                <option>{{enum}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="mb-2 row">
+            <label for="gender">Gender</label>
+            <select name="gender" id="gender" class="form-lfg ml-2">
+                <option selected disabled value="">Choose...</option>
+                {{#each genderEnums as |enum|}}
+                <option>{{enum}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="mb-2 row">
+            <label for="games">Games</label>
+            <select name="games" id="games" onchange="onPreferenceOptionSelected(event,gamesSelected)"
+                class="form-lfg ml-2">
+                <option selected disabled value="">Choose...</option>
+                {{#each games as |game|}}
+                <option value="{{game.name}}">{{game.name}}</option>
+                {{/each}}
+            </select>
+            <div class="row">
+                <span class="px-1 ml-4">Any</span>
+                <div class="custom-control custom-switch">
+                    <input name="customGameSwitch" type="checkbox" class="custom-control-input" id="customGameSwitch">
+                    <label class="custom-control-label" for="customGameSwitch">All</label>
+                </div>
+            </div>
+        </div>
+        <div id="gamesSelected" class="mb-2 row">
+        </div>
+        <div class="mb-2 row">
+            <label for="language">Language</label>
+            <select name="language" id="language" onchange="onPreferenceOptionSelected(event,langSelected)"
+                class="form-lfg ml-2">
+                <option selected disabled value="">Choose...</option>
+                {{#each langEnums as |lang|}}
+                <option value="{{lang}}">{{lang}}</option>
+                {{/each}}
+            </select>
+            <div class="row">
+                <span class="px-1 ml-4">Any</span>
+                <div class="custom-control custom-switch">
+                    <input name="customLangSwitch" type="checkbox" class="custom-control-input" id="customLangSwitch">
+                    <label class="custom-control-label" for="customLangSwitch">All</label>
+                </div>
+            </div>
+        </div>
+        <div id="langSelected" class="mb-2 row">
+        </div>
+        <div class="row">
+            <button type="submit" class="btn btn-primary">Look For Gamers</a>
+        </div>
+    </form>
+</div>
