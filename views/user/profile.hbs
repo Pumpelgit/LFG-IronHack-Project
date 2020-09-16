@@ -1,4 +1,3 @@
-
 <img src="/logo/logo.png" alt="LFG" height=72 class="mt-3 ml-5 pt-0">
 <div class="container p-4 w-100 d-flex flex-column col-6 mx-auto">
     <h3 class="align-self-center">Edit Profile</h3>
@@ -25,7 +24,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" data-dismiss="modal"
                             onclick="updateProfileUsername()">Save</button>
                     </div>
@@ -37,7 +36,7 @@
     <div class="row mb-2">
         <h5 class="w-100">Description</h5>
         <textarea disabled type="text" id="description" rows="4" cols="50"
-            style="resize: none" >{{user.description}}</textarea>
+            style="resize: none">{{user.description}}</textarea>
         <button class="btn btn-outline-primary fa fa-pencil mx-2 py-0 px-1 h-50 align-self-center" data-toggle="modal"
             data-target="#editDescriptionModal"></button>
         <div class="modal fade" id="editDescriptionModal" tabindex="-1" aria-labelledby="editDescriptionModal"
@@ -58,7 +57,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" data-dismiss="modal"
                             onclick="updateProfileDescription()">Save</button>
                     </div>
@@ -96,7 +95,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary" data-dismiss="modal"
                                 onclick="updateProfileAvatar()">Save</button>
                         </div>
@@ -108,7 +107,8 @@
     {{!-- Birth Date --}}
     <div class="row mb-2">
         <h5>Birth Date</h5>
-        <p class="mx-2" type="date" id="birthdate">{{#if user.birthdate}}{{date user.birthdate}}{{else}}Not defined{{/if}}</p>
+        <p class="mx-2" type="date" id="birthdate">{{#if user.birthdate}}{{date user.birthdate}}{{else}}Not
+            defined{{/if}}</p>
         <button class="btn btn-outline-primary fa fa-pencil m-0 py-0 px-1 h-50" data-toggle="modal"
             data-target="#editBirthDateModal"></button>
         <div class="modal fade" id="editBirthDateModal" tabindex="-1" aria-labelledby="editBirthDateModal"
@@ -130,7 +130,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" data-dismiss="modal"
                             onclick="updateProfileBirthDate()">Save</button>
                     </div>
@@ -166,7 +166,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" data-dismiss="modal"
                             onclick="updateProfileGender()">Save</button>
                     </div>
@@ -177,7 +177,8 @@
     {{!-- Language --}}
     <div class="row mb-2">
         <h5>Language</h5>
-        <p class="px-4" id="language">{{#if user.language}}{{#each user.language as |lang|}}| {{lang}} {{/each}} |{{else}}Not
+        <p class="px-4" id="language">{{#if user.language}}{{#each user.language as |lang|}}| {{lang}} {{/each}}
+            |{{else}}Not
             defined{{/if}}</p>
         <button class="btn btn-outline-primary fa fa-pencil m-0 py-0 px-1 btn-sm h-50" data-toggle="modal"
             data-target="#editLanguageModal"></button>
@@ -203,7 +204,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" data-dismiss="modal"
                             onclick="updateProfileLang()">Save</button>
                     </div>
@@ -215,8 +216,8 @@
     <div class="row mb-2">
         <h5>Region</h5>
         <p class="px-4" id="region">{{#if user.region}}{{user.region}}{{else}}Not defined{{/if}}</span>
-        <button class="btn btn-outline-primary fa fa-pencil m-0 py-0 px-1  btn-sm" data-toggle="modal"
-            data-target="#editRegionModal"></button>
+            <button class="btn btn-outline-primary fa fa-pencil m-0 py-0 px-1  btn-sm" data-toggle="modal"
+                data-target="#editRegionModal"></button>
         <div class="modal fade" id="editRegionModal" tabindex="-1" aria-labelledby="editRegionModal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content user-card">
@@ -238,7 +239,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" data-dismiss="modal"
                             onclick="updateProfileRegion()">Save</button>
                     </div>
@@ -249,7 +250,8 @@
     {{!-- Games --}}
     <div class="row mb-2">
         <h5>Games</h5>
-        <p class="px-4" id="games">{{#if user.games}}{{#each user.games as |game|}}| {{game.name}} {{/each}} |{{else}}Not
+        <p class="px-4" id="games">{{#if user.games}}{{#each user.games as |game|}}| {{game.name}} {{/each}}
+            |{{else}}Not
             defined{{/if}}</p>
         <button class="btn btn-outline-primary fa fa-pencil m-0 py-0 px-1 btn-sm h-50" data-toggle="modal"
             data-target="#editGameModal"></button>
@@ -274,7 +276,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" data-dismiss="modal"
                             onclick="updateProfileGames()">Save</button>
                     </div>
@@ -315,7 +317,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary" data-dismiss="modal"
                                 onclick="updateProfileGameTag({{@key}})">Save</button>
                         </div>
@@ -329,7 +331,8 @@
     {{#unless user.activation.profileFinished}}
     <p id="completeWarning" class="mb-0">Please complete all the required fields</p>
     {{/unless}}
-    <a href="/lfg" id="lfg" class="btn btn-primary w-50 align-self-center {{#unless user.activation.profileFinished}}disabled{{/unless}}">Look
+    <a href="/lfg" id="lfg"
+        class="btn btn-primary w-50 align-self-center {{#unless user.activation.profileFinished}}disabled{{/unless}}">Look
         For
         Gamers</a>
 </div>
