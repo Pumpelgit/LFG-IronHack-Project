@@ -1,3 +1,3 @@
 Welcome to 'Looking For Gamer' app
 
-Do things
+Look for gamers like you to play with!
